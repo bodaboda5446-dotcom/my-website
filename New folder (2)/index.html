@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تيك ليرن هب - منصة تعليم علوم الحاسوب</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+        }
+        
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+            50% { transform: scale(1.1) rotate(-180deg); opacity: 0.8; }
+        }
+        
+        /* Grid Pattern */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                linear-gradient(-90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        /* Navigation */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: row-reverse;
+        }
+        
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            flex-direction: row-reverse;
+        }
+        
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+            font-size: 1.1rem;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(-90deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* Page Sections */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 80px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 900px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #3b82f6 50%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideUp 1s ease;
+            line-height: 1.4;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            animation: slideUp 1s ease 0.2s both;
+        }
+        
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            animation: slideUp 1s ease 0.4s both;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
+        }
+        
+        /* School Info Banner */
+        .school-banner {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 900px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            animation: slideUp 1s ease 0.6s both;
+        }
+        
+        .school-icon {
+            font-size: 3rem;
+            color: #f59e0b;
+            margin-bottom: 1rem;
+        }
+        
+        .school-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #f59e0b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .school-details {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .school-badge {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            margin-top: 1rem;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        
+        /* Cards Grid */
+        .cards-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .topic-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            text-align: right;
+        }
+        
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(-90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: right 0.5s ease;
+        }
+        
+        .topic-card:hover::before {
+            right: 100%;
+        }
+        
+        .topic-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .topic-card:hover .card-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .card-subtitle {
+            color: #3b82f6;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .card-description {
+            color: #94a3b8;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 700;
+            transition: gap 0.3s ease;
+            flex-direction: row-reverse;
+        }
+        
+        .topic-card:hover .card-link {
+            gap: 1rem;
+            color: #8b5cf6;
+        }
+        
+        /* Detail Pages */
+        .detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .detail-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        
+        .detail-header h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.4;
+        }
+        
+        .detail-content {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+            direction: rtl;
+        }
+        
+        .detail-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #3b82f6;
+            text-align: right;
+        }
+        
+        .detail-info p {
+            color: #94a3b8;
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+            text-align: right;
+            font-size: 1.1rem;
+        }
+        
+        .detail-meta {
+            background: rgba(59, 130, 246, 0.1);
+            border-right: 4px solid #3b82f6;
+            border-left: none;
+            padding: 1.5rem;
+            border-radius: 15px 0 0 15px;
+            margin-top: 2rem;
+            text-align: right;
+        }
+        
+        .detail-meta p {
+            margin: 0.5rem 0;
+            color: #ffffff;
+            font-size: 1.1rem;
+        }
+        
+        .detail-meta strong {
+            color: #3b82f6;
+            margin-left: 0.5rem;
+        }
+        
+        .visit-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1rem;
+            flex-direction: row-reverse;
+        }
+        
+        .visit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4);
+        }
+        
+        /* Video Section */
+        .video-section {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .video-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        /* Team Section */
+        .team-section {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .team-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .team-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(-90deg, #3b82f6, #8b5cf6);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: right;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(59, 130, 246, 0.5);
+        }
+        
+        .team-card:hover::after {
+            transform: scaleX(1);
+        }
+        
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .team-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .team-role {
+            color: #3b82f6;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .team-topic {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        /* Platform Creators Section - Special Styling */
+        .creators-section {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 30px;
+            padding: 4rem 2rem;
+            margin: 4rem auto;
+            max-width: 1000px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .creators-section::before {
+            content: '👑';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 2rem;
+            opacity: 0.3;
+        }
+        
+        .creators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .creator-card {
+            background: rgba(10, 10, 10, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        
+        .creator-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(-90deg, #f59e0b, #d97706);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .creator-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(245, 158, 11, 0.5);
+            box-shadow: 0 20px 40px rgba(245, 158, 11, 0.2);
+        }
+        
+        .creator-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .creator-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            font-family: 'Cairo', sans-serif;
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+            border: 4px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .creator-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .creator-role {
+            color: #f59e0b;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .creator-desc {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .section-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(59, 130, 246, 0.5);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            from {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100vh) translateX(-100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .creators-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .school-name {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loader-content {
+            text-align: center;
+        }
+        
+        .loader-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .loader-progress {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(-90deg, #3b82f6, #8b5cf6);
+            animation: load 2s ease forwards;
+        }
+        
+        @keyframes load {
+            to { width: 100%; }
+        }
+        
+        /* RTL Specific Adjustments */
+        .fa-arrow-right {
+            transform: rotate(180deg);
+        }
+        
+        .detail-grid > div:last-child {
+            order: -1;
+        }
+        
+        @media (min-width: 769px) {
+            .detail-grid {
+                direction: ltr;
+            }
+            .detail-grid > div {
+                direction: rtl;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="loader-content">
+            <div class="logo" style="font-size: 2rem; margin-bottom: 1rem;">تيك ليرن هب</div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Elements -->
+    <div class="bg-animation"></div>
+    <div class="grid-pattern"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-container">
+        <div class="nav-content">
+            <div class="logo" onclick="showPage('home')">TechLearn Hub</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')">الرئيسية</a></li>
+                <li><a href="#" onclick="showPage('topics')">المواضيع</a></li>
+                <li><a href="#" onclick="showPage('team')">الفريق</a></li>
+                <li><a href="#" onclick="showPage('video')">الفيديو</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <section class="hero">
+            <div class="hero-content">
+                <h1>أتقن علوم الحاسوب</h1>
+                <p>استكشف ستة وحدات تعليمية شاملة تغطي الشبكات، تطوير الويب، تطبيقات الجوال، قواعد البيانات، البرمجة، وإدارة المحتوى. أنشأها طلاب متفانون لقيادة جيل المستقبل التقني.</p>
+                
+                <!-- School Information Banner -->
+                <div class="school-banner">
+                    <div class="school-icon"><i class="fas fa-school"></i></div>
+                    <div class="school-name">طلعت حرب الثانوية الصناعية للتأسيس العسكري</div>
+                    <div class="school-details">
+                        شعبة 3/1 - قسم تكنولوجيا المعلومات<br>
+                        Computer Technology Technical Department
+                    </div>
+                    <div class="school-badge">العجوزة - القاهرة</div>
+                </div>
+                
+                <button class="cta-button" onclick="showPage('topics')">
+                    استكشف المواضيع <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Platform Creators Section -->
+        <div class="creators-section">
+            <div style="text-align: center;">
+                <div class="section-badge">منشئو المنصة</div>
+                <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem; color: #ffffff;">صُنع بإتقان بواسطة</h2>
+                <p style="color: #94a3b8; max-width: 600px; margin: 0 auto;">فريق التطوير الرئيسي لهذه المنصة التعليمية المتكاملة</p>
+            </div>
+            
+            <div class="creators-grid">
+                <div class="creator-card">
+                    <div class="creator-avatar">ع م ر</div>
+                    <div class="creator-name">عبدالرحمن محمد رمضان</div>
+                    <div class="creator-role">مطور المنصة الرئيسي</div>
+                    <div class="creator-desc">مسؤول عن تطوير البنية التحتية والهيكل الأساسي للمنصة</div>
+                </div>
+                
+                <div class="creator-card">
+                    <div class="creator-avatar">أ م ع</div>
+                    <div class="creator-name">أحمد محمد علي</div>
+                    <div class="creator-role">مطور واجهات المستخدم</div>
+                    <div class="creator-desc">مصمم تجربة المستخدم والواجهات التفاعلية للمنصة</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cards-container">
+            <div class="topic-card" onclick="showDetail('networks')">
+                <div class="card-icon"><i class="fas fa-network-wired"></i></div>
+                <div class="card-subtitle">الوحدة الأولى</div>
+                <div class="card-title">تنفيذ وصيانة الشبكات</div>
+                <div class="card-description">دليل شامل لشبكات الحاسوب، استراتيجيات التنفيذ، وبروتوكولات الصيانة الأساسية للبنية التحتية التقنية الحديثة.</div>
+                <div class="card-link">اعرف المزيد <i class="fas fa-arrow-right"></i></div>
+            </div>
+
+            <div class="topic-card" onclick="showDetail('wordpress')">
+                <div class="card-icon"><i class="fab fa-wordpress"></i></div>
+                <div class="card-subtitle">الوحدة الثانية</div>
+                <div class="card-title">دليل ووردبريس الشامل</div>
+                <div class="card-description">تاريخ ووردبريس، تطوره، أنواع مواقع الووردبريس، التطبيقات العملية، وتحليل المزايا والقيود.</div>
+                <div class="card-link">اعرف المزيد <i class="fas fa-arrow-right"></i></div>
+            </div>
+
+            <div class="topic-card" onclick="showDetail('android')">
+                <div class="card-icon"><i class="fab fa-android"></i></div>
+                <div class="card-subtitle">الوحدة الثالثة</div>
+                <div class="card-title">عالم الأندرويد</div>
+                <div class="card-description">كل ما تريد معرفته عن نظام الأندرويد، تطوير تطبيقات الجوال، ونظام التشغيل الأكثر انتشاراً في العالم.</div>
+                <div class="card-link">اعرف المزيد <i class="fas fa-arrow-right"></i></div>
+            </div>
+
+            <div class="topic-card" onclick="showDetail('access')">
+                <div class="card-icon"><i class="fas fa-database"></i></div>
+                <div class="card-subtitle">الوحدة الرابعة</div>
+                <div class="card-title">مايكروسوفت أكسيس</div>
+                <div class="card-description">إدارة قواعد البيانات باستخدام مايكروسوفت أكسيس لتطبيقات الأعمال وإدارة البيانات بكفاءة.</div>
+                <div class="card-link">اعرف المزيد <i class="fas fa-arrow-right"></i></div>
+            </div>
+
+            <div class="topic-card" onclick="showDetail('python')">
+                <div class="card-icon"><i class="fab fa-python"></i></div>
+                <div class="card-subtitle">الوحدة الخامسة</div>
+                <div class="card-title">برمجة بايثون</div>
+                <div class="card-description">تعلم لغة بايثون من الأساسيات إلى المفاهيم المتقدمة مع أمثلة عملية وتطبيقات واقعية.</div>
+                <div class="card-link">اعرف المزيد <i class="fas fa-arrow-right"></i></div>
+            </div>
+
+            <div class="topic-card" onclick="showDetail('html')">
+                <div class="card-icon"><i class="fab fa-html5"></i></div>
+                <div class="card-subtitle">الوحدة السادسة</div>
+                <div class="card-title">أساسيات HTML</div>
+                <div class="card-description">دليلك الشامل لتعلم HTML، لغة بناء مواقع الويب الأساسية وتطوير الويب Frontend.</div>
+                <div class="card-link">اعرف المزيد <i class="fas fa-arrow-right"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Topics Grid Page -->
+    <div id="topics" class="page">
+        <div class="detail-container">
+            <div class="detail-header">
+                <h2>جميع المواضيع التعليمية</h2>
+                <p style="color: #94a3b8;">اختر وحدة لتبدأ رحلتك التعليمية</p>
+            </div>
+            
+            <!-- School Info in Topics Page -->
+            <div class="school-banner" style="margin-bottom: 3rem;">
+                <div class="school-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="school-name">طلعت حرب الثانوية الصناعية للتأسيس العسكري</div>
+                <div class="school-details">
+                    شعبة 3/1 - قسم تكنولوجيا المعلومات<br>
+                    جميع المواقع والمحتوى من إعداد طلاب المدرسة
+                </div>
+            </div>
+            
+            <div class="cards-container" style="padding: 0;">
+                <div class="topic-card" onclick="showDetail('networks')">
+                    <div class="card-icon"><i class="fas fa-network-wired"></i></div>
+                    <div class="card-title">تنفيذ وصيانة الشبكات</div>
+                    <div class="card-description">بواسطة محمد إيهاب</div>
+                </div>
+                <div class="topic-card" onclick="showDetail('wordpress')">
+                    <div class="card-icon"><i class="fab fa-wordpress"></i></div>
+                    <div class="card-title">ووردبريس</div>
+                    <div class="card-description">بواسطة محمد رامي</div>
+                </div>
+                <div class="topic-card" onclick="showDetail('android')">
+                    <div class="card-icon"><i class="fab fa-android"></i></div>
+                    <div class="card-title">الأندرويد</div>
+                    <div class="card-description">بواسطة عبدالله محمد حسين</div>
+                </div>
+                <div class="topic-card" onclick="showDetail('access')">
+                    <div class="card-icon"><i class="fas fa-database"></i></div>
+                    <div class="card-title">مايكروسوفت أكسيس</div>
+                    <div class="card-description">بواسطة كيرلس عماد</div>
+                </div>
+                <div class="topic-card" onclick="showDetail('python')">
+                    <div class="card-icon"><i class="fab fa-python"></i></div>
+                    <div class="card-title">بايثون</div>
+                    <div class="card-description">بواسطة أياد محمد رضا</div>
+                </div>
+                <div class="topic-card" onclick="showDetail('html')">
+                    <div class="card-icon"><i class="fab fa-html5"></i></div>
+                    <div class="card-title">HTML</div>
+                    <div class="card-description">بواسطة محمد رامي</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Pages -->
+    <div id="detail-networks" class="page">
+        <div class="detail-container">
+            <div class="detail-header">
+                <h2><i class="fas fa-network-wired" style="margin-left: 1rem;"></i>تنفيذ وصيانة الشبكات</h2>
+            </div>
+            <div class="detail-content">
+                <div class="detail-grid">
+                    <div class="detail-info">
+                        <h3>عن هذه الوحدة</h3>
+                        <p>تغطي هذه الوحدة الشاملة شبكات الحاسوب من الأساسيات إلى التنفيذ المتقدم. يتعلم الطلاب بنية الشبكات، البروتوكولات، مكونات الأجهزة، وإجراءات الصيانة الأساسية للبنية التحتية التقنية الحديثة.</p>
+                        <p>تشمل المواضيع: تكوين LAN/WAN، بروتوكولات TCP/IP، أساسيات أمان الشبكات، منهجيات استكشاف الأخطاء وإصلاحها، واستراتيجيات الصيانة الوقائية.</p>
+                        <div class="detail-meta">
+                            <p><strong>المنشئ:</strong> محمد إيهاب</p>
+                            <p><strong>المدرسة:</strong> طلعت حرب الثانوية الصناعية للتأسيس العسكري</p>
+                            <p><strong>الشعبة:</strong> 3/1 - تكنولوجيا المعلومات</p>
+                            <p><strong>المستوى:</strong> متوسط إلى متقدم</p>
+                        </div>
+                        <a href="https://019c69df-726f-7c9d-960e-cffc30f221b6.arena.site/" target="_blank" class="visit-btn">
+                            زيارة الموقع <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 20px; padding: 2rem; text-align: center;">
+                        <i class="fas fa-network-wired" style="font-size: 8rem; color: #3b82f6; opacity: 0.5;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="detail-wordpress" class="page">
+        <div class="detail-container">
+            <div class="detail-header">
+                <h2><i class="fab fa-wordpress" style="margin-left: 1rem;"></i>دليل ووردبريس الشامل</h2>
+            </div>
+            <div class="detail-content">
+                <div class="detail-grid">
+                    <div class="detail-info">
+                        <h3>عن هذه الوحدة</h3>
+                        <p>استكشف نظام إدارة المحتوى الأكثر شعبية في العالم. تغطي هذه الوحدة تاريخ ووردبريس، تطوره، أنواع مواقع الووردبريس المختلفة، التطبيقات العملية، والتحليل النقدي للمزايا والقيود.</p>
+                        <p>مثالية للطلاب المهتمين بتطوير الويب، إدارة المحتوى، والنشر الرقمي دون الحاجة لمعرفة برمجية واسعة.</p>
+                        <div class="detail-meta">
+                            <p><strong>المنشئ:</strong> محمد رامي</p>
+                            <p><strong>المدرسة:</strong> طلعت حرب الثانوية الصناعية للتأسيس العسكري</p>
+                            <p><strong>الشعبة:</strong> 3/1 - تكنولوجيا المعلومات</p>
+                            <p><strong>المستوى:</strong> مبتدئ إلى متوسط</p>
+                        </div>
+                        <a href="https://019c6112-a46c-7ce4-8e49-61aed4cd2641.arena.site/" target="_blank" class="visit-btn">
+                            زيارة الموقع <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 20px; padding: 2rem; text-align: center;">
+                        <i class="fab fa-wordpress" style="font-size: 8rem; color: #21759b; opacity: 0.5;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="detail-android" class="page">
+        <div class="detail-container">
+            <div class="detail-header">
+                <h2><i class="fab fa-android" style="margin-left: 1rem;"></i>عالم الأندرويد</h2>
+            </div>
+            <div class="detail-content">
+                <div class="detail-grid">
+                    <div class="detail-info">
+                        <h3>عن هذه الوحدة</h3>
+                        <p>تعمق في نظام الأندرويد الشامل يغطي أساسيات نظام التشغيل المحمول، أساسيات تطوير التطبيقات، بنية الأندرويد، ونظام Google Play البيئي. تعلم ما يجعل الأندرويد النظام الأكثر شعبية في العالم.</p>
+                        <p>يشمل تغطية Android Studio، أساسيات Kotlin/Java، مبادئ تصميم واجهة المستخدم، وإدارة دورة حياة التطبيقات المحمولة.</p>
+                        <div class="detail-meta">
+                            <p><strong>المنشئ:</strong> عبدالله محمد حسين</p>
+                            <p><strong>المدرسة:</strong> طلعت حرب الثانوية الصناعية للتأسيس العسكري</p>
+                            <p><strong>الشعبة:</strong> 3/1 - تكنولوجيا المعلومات</p>
+                            <p><strong>المستوى:</strong> مبتدئ إلى متوسط</p>
+                        </div>
+                        <a href="https://019af020-90a4-7290-9a30-87ab54488e1f.arena.site/" target="_blank" class="visit-btn">
+                            زيارة الموقع <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 20px; padding: 2rem; text-align: center;">
+                        <i class="fab fa-android" style="font-size: 8rem; color: #3ddc84; opacity: 0.5;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="detail-access" class="page">
+        <div class="detail-container">
+            <div class="detail-header">
+                <h2><i class="fas fa-database" style="margin-left: 1rem;"></i>مايكروسوفت أكسيس</h2>
+            </div>
+            <div class="detail-content">
+                <div class="detail-grid">
+                    <div class="detail-info">
+                        <h3>عن هذه الوحدة</h3>
+                        <p>أتقن إدارة قواعد البيانات مع مايكروسوفت أكسيس. تعلم إنشاء تطبيقات قواعد بيانات قوية، تصميم الجداول والعلاقات، بناء الاستعلامات، النماذج، والتقارير لإدارة بيانات الأعمال دون برمجة SQL معقدة.</p>
+                        <p>مثالية لتطبيقات الأعمال الصغيرة، إدارة المخزون، وسيناريوهات تطوير التطبيقات السريعة.</p>
+                        <div class="detail-meta">
+                            <p><strong>المنشئ:</strong> كيرلس عماد</p>
+                            <p><strong>المدرسة:</strong> طلعت حرب الثانوية الصناعية للتأسيس العسكري</p>
+                            <p><strong>الشعبة:</strong> 3/1 - تكنولوجيا المعلومات</p>
+                            <p><strong>المستوى:</strong> مبتدئ</p>
+                        </div>
+                        <a href="https://019c6346-a1bf-7d05-8434-024f202d14e9.arena.site/" target="_blank" class="visit-btn">
+                            زيارة الموقع <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 20px; padding: 2rem; text-align: center;">
+                        <i class="fas fa-database" style="font-size: 8rem; color: #a4373a; opacity: 0.5;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="detail-python" class="page">
+        <div class="detail-container">
+            <div class="detail-header">
+                <h2><i class="fab fa-python" style="margin-left: 1rem;"></i>برمجة بايثون</h2>
+            </div>
+            <div class="detail-content">
+                <div class="detail-grid">
+                    <div class="detail-info">
+                        <h3>عن هذه الوحدة</h3>
+                        <p>تعلم بايثون، لغة البرمجة المتعددة الاستخدامات التي تشكل قوة كل شيء من تطبيقات الويب إلى الذكاء الاصطناعي. تغطي هذه الوحدة أساسيات الصيغة، هياكل البيانات، البرمجة كائنية التوجه، والتمارين البرمجية العملية.</p>
+                        <p>سهولة قراءة بايثون تجعلها مثالية للمبتدئين بينما قوتها ترضي المبرمجين المتقدمين في علم البيانات، الأتمتة، وتطوير الويب.</p>
+                        <div class="detail-meta">
+                            <p><strong>المنشئ:</strong> أياد محمد رضا (ديدو)</p>
+                            <p><strong>المدرسة:</strong> طلعت حرب الثانوية الصناعية للتأسيس العسكري</p>
+                            <p><strong>الشعبة:</strong> 3/1 - تكنولوجيا المعلومات</p>
+                            <p><strong>المستوى:</strong> مبتدئ إلى متقدم</p>
+                        </div>
+                        <a href="https://019af8a6-97b1-7f98-9e0d-1656e46f703c.arena.site" target="_blank" class="visit-btn">
+                            زيارة الموقع <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 20px; padding: 2rem; text-align: center;">
+                        <i class="fab fa-python" style="font-size: 8rem; color: #3776ab; opacity: 0.5;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="detail-html" class="page">
+        <div class="detail-container">
+            <div class="detail-header">
+                <h2><i class="fab fa-html5" style="margin-left: 1rem;"></i>أساسيات HTML</h2>
+            </div>
+            <div class="detail-content">
+                <div class="detail-grid">
+                    <div class="detail-info">
+                        <h3>عن هذه الوحدة</h3>
+                        <p>أتقن اللبنات الأساسية للويب. HTML (لغة ترميز النصوص التشعبية) هي لغة الترميز القياسية للمستندات المُصممة للعرض في متصفح الويب. يغطي هذا الدليل الشامل العناصر، السمات، الترميز الدلالي، وميزات HTML5 الحديثة.</p>
+                        <p>أساس أساسي لأي شخص يسعى لمهن تطوير الويب، تصميم الويب، أو هندسة الواجهات الأمامية.</p>
+                        <div class="detail-meta">
+                            <p><strong>المنشئ:</strong> محمد رامي</p>
+                            <p><strong>المدرسة:</strong> طلعت حرب الثانوية الصناعية للتأسيس العسكري</p>
+                            <p><strong>الشعبة:</strong> 3/1 - تكنولوجيا المعلومات</p>
+                            <p><strong>المستوى:</strong> مبتدئ</p>
+                        </div>
+                        <a href="https://019c4050-fb6b-7746-aeed-f72b6bc1c043.arena.site/" target="_blank" class="visit-btn">
+                            زيارة الموقع <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 20px; padding: 2rem; text-align: center;">
+                        <i class="fab fa-html5" style="font-size: 8rem; color: #e34f26; opacity: 0.5;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team Page -->
+    <div id="team" class="page">
+        <div class="team-section">
+            <div class="detail-header">
+                <h2>تعرف على فريقنا</h2>
+                <p style="color: #94a3b8; max-width: 600px; margin: 0 auto;">طلاب مدرسة طلعت حرب الثانوية الصناعية للتأسيس العسكري - شعبة 3/1 تكنولوجيا المعلومات</p>
+            </div>
+            
+            <!-- School Info -->
+            <div class="school-banner" style="max-width: 800px; margin: 0 auto 4rem auto;">
+                <div class="school-icon"><i class="fas fa-school"></i></div>
+                <div class="school-name">طلعت حرب الثانوية الصناعية للتأسيس العسكري</div>
+                <div class="school-details">
+                    شعبة 3/1 - قسم تكنولوجيا المعلومات<br>
+                    Computer Technology Technical Department<br>
+                    العجوزة - القاهرة
+                </div>
+            </div>
+            
+            <!-- Platform Creators Subsection -->
+            <div style="margin-bottom: 5rem;">
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <div class="section-badge">منشئو المنصة</div>
+                    <h3 style="font-size: 1.8rem; color: #ffffff; margin-top: 1rem;">فريق التطوير الرئيسي</h3>
+                </div>
+                
+                <div class="creators-grid" style="max-width: 800px; margin: 0 auto;">
+                    <div class="creator-card">
+                        <div class="creator-avatar">ع م ر</div>
+                        <div class="creator-name">عبدالرحمن محمد رمضان</div>
+                        <div class="creator-role">مطور المنصة الرئيسي</div>
+                        <div class="creator-desc">مسؤول عن تطوير البنية التحتية والهيكل الأساسي للمنصة</div>
+                    </div>
+                    
+                    <div class="creator-card">
+                        <div class="creator-avatar">أ م ع</div>
+                        <div class="creator-name">أحمد محمد علي</div>
+                        <div class="creator-role">مطور واجهات المستخدم</div>
+                        <div class="creator-desc">مصمم تجربة المستخدم والواجهات التفاعلية للمنصة</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <div class="section-badge" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6);">منشئو المحتوى</div>
+                <h3 style="font-size: 1.8rem; color: #ffffff; margin-top: 1rem;">مؤلفو الوحدات التعليمية</h3>
+            </div>
+            
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">م إ</div>
+                    <div class="team-name">محمد إيهاب</div>
+                    <div class="team-role">أخصائي شبكات</div>
+                    <div class="team-topic">وحدة تنفيذ وصيانة الشبكات</div>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">م ر</div>
+                    <div class="team-name">محمد رامي</div>
+                    <div class="team-role">خبير نظم إدارة المحتوى</div>
+                    <div class="team-topic">دليل ووردبريس الشامل</div>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">أ م</div>
+                    <div class="team-name">عبدالله محمد حسين</div>
+                    <div class="team-role">مطور تطبيقات جوال</div>
+                    <div class="team-topic">وحدة تطوير الأندرويد</div>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">ك م</div>
+                    <div class="team-name">كيرلس عماد</div>
+                    <div class="team-role">مدير قواعد بيانات</div>
+                    <div class="team-topic">مايكروسوفت أكسيس</div>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">أ ر</div>
+                    <div class="team-name">أياد محمد رضا</div>
+                    <div class="team-role">مدرب بايثون</div>
+                    <div class="team-topic">برمجة بايثون (بايثون مع ديدو)</div>
+                </div>
+                
+                <div class="team-card">
+                    <div class="team-avatar">م ر</div>
+                    <div class="team-name">محمد رامي</div>
+                    <div class="team-role">مطور ويب</div>
+                    <div class="team-topic">أساسيات HTML</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Page -->
+    <div id="video" class="page">
+        <div class="video-section">
+            <div class="detail-header">
+                <h2>الموارد التعليمية</h2>
+                <p style="color: #94a3b8;">شاهد فيديو مقدمة علوم الحاسوب المختار</p>
+            </div>
+            
+            <!-- School Info -->
+            <div class="school-banner" style="margin-bottom: 3rem;">
+                <div class="school-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="school-name">طلعت حرب الثانوية الصناعية للتأسيس العسكري</div>
+                <div class="school-details">
+                    شعبة 3/1 - قسم تكنولوجيا المعلومات<br>
+                    Computer Technology Technical Department
+                </div>
+            </div>
+            
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/dAPtZkBVFF0?si=computer_science_education" 
+                    title="أساسيات علوم الحاسوب للمبتدئين" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+            
+            <div class="detail-content" style="margin-top: 3rem;">
+                <h3 style="color: #3b82f6; margin-bottom: 1rem; text-align: right;">عن هذا الفيديو</h3>
+                <p style="color: #94a3b8; line-height: 1.9; text-align: right; font-size: 1.1rem;">
+                    يغطي هذا الفيديو الشامل باللغة العربية أساسيات علوم الحاسوب بما في ذلك التفكير المنطقي، مفاهيم البرمجة، أنظمة التشغيل، وقواعد البيانات. 
+                    مثالي للمبتدئين الذين يبدأون رحلتهم في تعليم علوم الحاسوب. يقدم الفيديو خارطة طريق منظمة لفهم كيفية عمل الحواسيب وكيفية البدء في البرمجة.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hide loader after page loads
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 2000);
+        });
+
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.right = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+
+        // Page navigation
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            const selectedPage = document.getElementById(pageId);
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Detail page navigation
+        function showDetail(topic) {
+            showPage('detail-' + topic);
+        }
+
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+            });
+        });
+
+        // Add scroll effect to navigation
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav-container');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                nav.style.background = 'rgba(10, 10, 10, 0.95)';
+                nav.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.3)';
+            } else {
+                nav.style.background = 'rgba(10, 10, 10, 0.8)';
+                nav.style.boxShadow = 'none';
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Add parallax effect to cards on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.topic-card');
+            const mouseX = e.clientX / window.innerWidth - 0.5;
+            const mouseY = e.clientY / window.innerHeight - 0.5;
+            
+            cards.forEach((card, index) => {
+                const speed = (index % 3 + 1) * 10;
+                const x = mouseX * speed;
+                const y = mouseY * speed;
+                
+                if (card.matches(':hover')) {
+                    card.style.transform = `translateY(-10px) perspective(1000px) rotateX(${-y}deg) rotateY(${-x}deg)`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
